@@ -4,9 +4,11 @@ defmodule Day2.Q1 do
   """
 
   @doc """
-  Input: a sequence of changes in frequency, one value per line
-  A value like +6 means the current frequency increases by 6
-  A value like -3 means the current frequency decreases by 3.
+  Finds checksum of list of ids
+  Checksum is calculated by counting the number that have an ID containing 
+  exactly two of any letter and then separately counting those with 
+  exactly three of any letter. You can multiply those two counts together 
+  to get a rudimentary checksum
     
   ## Examples
 
