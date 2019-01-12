@@ -1,4 +1,4 @@
-defmodule Q1 do
+defmodule Day1.Q1 do
   @moduledoc """
   Documentation for Day 1 Q1.
   """

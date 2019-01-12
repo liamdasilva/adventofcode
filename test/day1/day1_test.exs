@@ -1,9 +1,12 @@
 defmodule Day1Test do
   use ExUnit.Case
+  alias Day1.Q1
+  alias Day1.Q2
+
   doctest Q1
   doctest Q2
 
-  test "works with my input" do
+  test "q1 works with my input" do
     result =
       "lib/fixtures/day1_input.txt"
       |> File.read!()

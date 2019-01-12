@@ -1,5 +1,6 @@
-defmodule Q2 do
+defmodule Day1.Q2 do
   require Logger
+  alias Day1.Q1
 
   @moduledoc """
   Documentation for Day 1 Q2.
