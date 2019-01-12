@@ -5,7 +5,7 @@ defmodule Day1Test do
 
   test "works with my input" do
     result =
-      "lib/fixtures/input.txt"
+      "lib/fixtures/day1_input.txt"
       |> File.read!()
       |> Q1.run()
 
@@ -14,7 +14,7 @@ defmodule Day1Test do
 
   test "q2 works with my input" do
     result =
-      "lib/fixtures/input.txt"
+      "lib/fixtures/day1_input.txt"
       |> Q2.run(:file)
 
     assert result == 70357
