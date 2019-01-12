@@ -1,21 +1,9 @@
-# Day1
+# Advent of Code challenge
 
-**TODO: Add description**
+Advent of Code is an Advent calendar of small programming puzzles for a variety of skill sets and skill levels that can be solved in any programming language you like. People use them as a speed contest, interview prep, company training, university coursework, practice problems, or to challenge each other.
 
-## Installation
+I have chosen to tackle these problems using  [Elixir](https://elixir-lang.org/).
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `day1` to your list of dependencies in `mix.exs`:
+More information about the 2018 Advent of Code challenge can be found [here](https://adventofcode.com/2018/about)!
 
-```elixir
-def deps do
-  [
-    {:day1, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/day1](https://hexdocs.pm/day1).
 
