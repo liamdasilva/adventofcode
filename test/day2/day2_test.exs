@@ -7,10 +7,10 @@ defmodule Day2Test do
   doctest Q2
 
   test "q1 works with my input" do
-    assert File.stream!("lib/fixtures/day2_input.txt") |> Q1.run() == 7904
+    assert File.stream!("lib/fixtures/day2_input") |> Q1.run() == 7904
   end
 
   test "q2 works with my input" do
-    assert File.stream!("lib/fixtures/day2_input.txt") |> Q2.run() == "wugbihckpoymcpaxefotvdzns"
+    assert File.stream!("lib/fixtures/day2_input") |> Q2.run() == "wugbihckpoymcpaxefotvdzns"
   end
 end
