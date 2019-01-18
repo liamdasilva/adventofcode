@@ -12,9 +12,9 @@ defmodule Day3.Q1 do
   The number of inches between the top edge of the fabric and the top edge of the rectangle.
   The width of the rectangle in inches.
   The height of the rectangle in inches.
-  A claim like `#123 @ 3,2: 5x4` means that claim ID 123 specifies a rectangle 3 inches from 
+  A claim like `#123 @ 3,2: 5x4` means that claim ID 123 specifies a rectangle 3 inches from
   the left edge, 2 inches from the top edge, 5 inches wide, and 4 inches tall.
-    
+
   ## Examples
 
       iex> Q1.run(["#1 @ 1,3: 4x4", "#2 @ 3,1: 4x4","#3 @ 5,5: 2x2"])
@@ -25,9 +25,11 @@ defmodule Day3.Q1 do
     input_stream
     |> Stream.map(&String.trim/1)
     |> Stream.map(&parse_claim/1)
-    |> Stream.map(&turn_claim_into_coords/1)
-    |> find_overlapping()
-    |> MapSet.size()
+    |> Enum.map(&turn_claim_into_coords/1)
+    |> combine_coords()
+    |> Map.values()
+    |> Stream.filter(fn x -> MapSet.size(x) > 1 end)
+    |> Enum.count()
   end
 
   def parse_claim(claim_string) do
@@ -57,29 +59,17 @@ defmodule Day3.Q1 do
       for i <- top_range, j <- left_range do
         {i, j}
       end
-      |> Enum.into(MapSet.new())
 
-    %{"coords" => coords, "id" => claim["id"]}
+    %{coords: coords, id: claim["id"]}
   end
 
-  @doc """
-  Given a list of MapSets (`list`), see if there are any intersections
-  If there are, return the elements in all intersections
-  """
-  def find_overlapping(list) do
-    {overlapping, _} =
-      Enum.reduce(list, {MapSet.new(), Enum.drop(list, 1)}, fn el, {acc, rest} ->
-        intersections = find_overlapping_aux(el, rest)
-        {MapSet.union(acc, intersections), Enum.drop(rest, 1)}
+  def combine_coords(list) do
+    Enum.reduce(list, %{}, fn el, acc ->
+      %{coords: coords, id: id} = el
+
+      Enum.reduce(coords, acc, fn coord, a ->
+        Map.update(a, coord, MapSet.new([id]), fn x -> MapSet.put(x, id) end)
       end)
-
-    overlapping
-  end
-
-  def find_overlapping_aux(set, list_to_compare) do
-    Enum.reduce(list_to_compare, MapSet.new(), fn el, acc ->
-      intersection = MapSet.intersection(set["coords"], el["coords"])
-      MapSet.union(acc, intersection)
     end)
   end
 end

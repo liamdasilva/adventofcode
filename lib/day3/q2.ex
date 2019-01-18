@@ -28,7 +28,10 @@ defmodule Day3.Q2 do
     intersecting_ids =
       claim
       |> Stream.map(&Q1.turn_claim_into_coords/1)
-      |> find_overlapping_ids()
+      |> Q1.combine_coords()
+      |> Map.values()
+      |> Stream.filter(fn x -> MapSet.size(x) > 1 end)
+      |> Enum.reduce(MapSet.new(), fn el, acc -> MapSet.union(el, acc) end)
 
     with [id] <-
            MapSet.difference(all_ids, intersecting_ids)
@@ -37,30 +40,5 @@ defmodule Day3.Q2 do
     else
       _ -> {:error, "No single non overlapping claim"}
     end
-  end
-
-  @doc """
-  Given a list of claims (`list`), see if there are any intersections
-  If there are, return set of all  claims
-  """
-  def find_overlapping_ids(list) do
-    {overlapping, _} =
-      Enum.reduce(list, {MapSet.new(), Enum.drop(list, 1)}, fn el, {acc, rest} ->
-        intersection_ids = find_overlapping_ids_aux(el, rest)
-        {MapSet.union(acc, intersection_ids), Enum.drop(rest, 1)}
-      end)
-
-    overlapping
-  end
-
-  def find_overlapping_ids_aux(set, list_to_compare) do
-    Enum.reduce(list_to_compare, MapSet.new(), fn el, acc ->
-      if MapSet.disjoint?(set["coords"], el["coords"]) do
-        acc
-      else
-        MapSet.put(acc, set["id"])
-        |> MapSet.put(el["id"])
-      end
-    end)
   end
 end
