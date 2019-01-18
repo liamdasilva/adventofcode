@@ -67,10 +67,10 @@ defmodule Day6.Q1 do
     Enum.reduce(coords, %{}, fn coord, box ->
       {a, b} = coord
 
-      Map.update(box, :top, b, &Enum.min([b, &1]))
-      |> Map.update(:bottom, b, &Enum.max([b, &1]))
-      |> Map.update(:left, a, &Enum.min([a, &1]))
-      |> Map.update(:right, a, &Enum.max([a, &1]))
+      Map.update(box, :top, b, &min(b, &1))
+      |> Map.update(:bottom, b, &max(b, &1))
+      |> Map.update(:left, a, &min(a, &1))
+      |> Map.update(:right, a, &max(a, &1))
     end)
   end
 
@@ -96,8 +96,6 @@ defmodule Day6.Q1 do
           {manhattan_distance(coord, x), index}
         end)
 
-      # IO.inspect(distances)
-
       start_val = {List.first(distances), false}
 
       {{_min, i}, dupes?} =
@@ -108,17 +106,12 @@ defmodule Day6.Q1 do
 
           cond do
             dist < val ->
-              # IO.puts("Dist: #{dist}, Val: #{val}, less")
               {el, false}
 
             dist == val ->
-              # IO.puts("equal")
-
               {el, true}
 
             true ->
-              # IO.puts("more")
-
               acc
           end
         end)
