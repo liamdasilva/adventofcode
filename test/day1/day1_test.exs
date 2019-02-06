@@ -2,9 +2,11 @@ defmodule Day1Test do
   use ExUnit.Case
   alias Day1.Q1
   alias Day1.Q2
+  alias Day1.Q2V2
 
   doctest Q1
   doctest Q2
+  doctest Q2V2
 
   test "q1 works with my input" do
     result =
