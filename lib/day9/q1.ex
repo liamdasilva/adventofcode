@@ -42,13 +42,19 @@ defmodule Day9.Q1 do
 
   ## Examples
 
+      iex> Q1.run("9 players; last marble is worth 25 points")
+      32
       iex> Q1.run("10 players; last marble is worth 1618 points")
       8317
+      iex> Q1.run("13 players; last marble is worth 7999 points")
+      146373
 
   """
   def run(input) do
     parse_input(input)
     |> play_game()
+    |> Stream.map(fn {_, v} -> v end)
+    |> Enum.max()
   end
 
   def parse_input(string) do
@@ -59,21 +65,49 @@ defmodule Day9.Q1 do
   end
 
   def play_game(%{last: last, players: players}) do
-    Range.new(1, last)
-    |> Enum.reduce({new_game_state(), %{}}, fn marble, {game_state, player_scores} ->
-      nil
-    end)
+    {_game_state, player_scores} =
+      Range.new(1, last)
+      |> Enum.reduce({new_game_state(), new_players(players)}, fn marble,
+                                                                  {game_state, player_scores} ->
+        player = rem(marble, players)
+
+        case rem(marble, 23) do
+          0 ->
+            {new_state, score} = remove_marble(game_state)
+            scores = Map.update!(player_scores, player, fn x -> x + score + marble end)
+            {new_state, scores}
+
+          _ ->
+            new_state = insert_marble(game_state, marble)
+            {new_state, player_scores}
+        end
+      end)
+
+    player_scores
   end
 
   def new_game_state() do
-    %{list: [0], size: 1, index: 0}
+    %{list: Circle.new(), size: 1, index: 0}
   end
 
   def insert_marble(%{list: list, size: size, index: index}, marble) do
-    index = index + 2
+    index = Kernel.+(index, 2) |> Kernel.rem(size)
 
     size = size + 1
-    list = List.insert_at(list, index, marble)
+    list = Circle.add_marble(list, marble)
     %{index: index, size: size, list: list}
+  end
+
+  def remove_marble(%{list: list, size: size, index: index}) do
+    index = Kernel.-(index, 7) |> Kernel.+(size) |> Kernel.rem(size)
+    size = size - 1
+    {marble, list} = Circle.remove_marble(list)
+    {%{index: index, size: size, list: list}, marble}
+  end
+
+  def new_players(players) do
+    Range.new(0, players - 1)
+    |> Enum.map(fn x -> {x, 0} end)
+    |> Enum.into(%{})
   end
 end
